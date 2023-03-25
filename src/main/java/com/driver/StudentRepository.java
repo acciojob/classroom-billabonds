@@ -46,7 +46,7 @@ public class StudentRepository {
 
                 String student = Entry.getKey();
                 studentDb.remove(teacher);
-                studentTeacherPair.remove(teacher);
+                studentTeacherPair.remove(teacher);              // key : Student ,value : Teachergit
             }
         }
         return ;
