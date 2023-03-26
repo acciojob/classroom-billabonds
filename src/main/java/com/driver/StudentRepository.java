@@ -45,8 +45,8 @@ public class StudentRepository {
             if(Entry.getValue().equals(teacher)){
 
                 String student = Entry.getKey();
-                studentDb.remove(teacher);
-                studentTeacherPair.remove(teacher);              // key : Student ,value : Teachergit
+                studentDb.remove(student);
+                studentTeacherPair.remove(student);              // key : Student ,value : Teachergit
             }
         }
         return ;
@@ -64,8 +64,8 @@ public class StudentRepository {
                 if(Entry.getValue().equals(teacher)){
 
                     String student = Entry.getKey();
-                    studentDb.remove(teacher);
-                    studentTeacherPair.remove(teacher);
+                    studentDb.remove(student);
+                    studentTeacherPair.remove(student);
                 }
             }
         }
