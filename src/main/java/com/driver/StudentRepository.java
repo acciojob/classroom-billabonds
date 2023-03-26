@@ -2,6 +2,7 @@ package com.driver;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,7 @@ public class StudentRepository {
 
     HashMap<String,Teacher> teacherDb = new HashMap<>();
 
-    HashMap<String,String> studentTeacherPair = new HashMap<>();
+    HashMap<String,List<String>> studentTeacherPair = new HashMap<>();
 
     public void addStudent(Student student){
 
@@ -31,45 +32,38 @@ public class StudentRepository {
 
     public void addStudentTeacherPair(String student,String teacher){
 
-        studentTeacherPair.put(student,teacher);
-        return ;
+        List<String> list = studentTeacherPair.get(teacher);
+
+        if(list == null){
+                list = new ArrayList<>();
+        }
+
+        list.add(student);
+        studentTeacherPair.put(teacher,list);
+
     }
 
     public void removeTeacher(String teacher){
 
-        teacherDb.remove(teacher);
-        // Iterate the complete hashmap
-
-        for(Map.Entry<String,String> Entry : studentTeacherPair.entrySet()){
-
-            if(Entry.getValue().equals(teacher)){
-
-                String student = Entry.getKey();
-                studentDb.remove(student);
-                studentTeacherPair.remove(student);              // key : Student ,value : Teachergit
-            }
+        for(String st : studentTeacherPair.get(teacher)){
+            studentDb.remove(st);
         }
-        return ;
+
+        studentTeacherPair.remove(teacher);
+        teacherDb.remove(teacher);
     }
 
     public void removeAllTeacher(){
 
         for(String teacher : teacherDb.keySet())
         {
-            teacherDb.remove(teacher);
-            // Iterate the complete hashmap
-
-            for(Map.Entry<String,String> Entry : studentTeacherPair.entrySet()){
-
-                if(Entry.getValue().equals(teacher)){
-
-                    String student = Entry.getKey();
-                    studentDb.remove(student);
-                    studentTeacherPair.remove(student);
-                }
+            for(String st : studentTeacherPair.get(teacher)){
+                studentDb.remove(st);
             }
+
+            studentTeacherPair.remove(teacher);
+            teacherDb.remove(teacher);
         }
-        return ;
     }
 
     public Student getStudentByName(String name){
@@ -84,13 +78,17 @@ public class StudentRepository {
 
     public List<String> getStudentsByTeacherName(String teacher){
 
-        List<String> list = (List<String>) teacherDb.get(teacher);
-        return list;
+        return studentTeacherPair.get(teacher);
     }
 
     public List<String> getAllStudents(){
 
-        List<String> list = (List<String>) studentDb.keySet();
+        List<String> list = new ArrayList<>();
+
+        for(String st : studentDb.keySet()){
+            list.add(st);
+        }
+
         return list;
     }
 
